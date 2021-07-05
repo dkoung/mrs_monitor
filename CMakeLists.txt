@@ -29,7 +29,7 @@ generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 catkin_package(
 INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS}
- LIBRARIES ${PROJECT_NAME} mrs_monitor_io
+ LIBRARIES mrs_monitor_io
  CATKIN_DEPENDS
     roscpp
     geometry_msgs
