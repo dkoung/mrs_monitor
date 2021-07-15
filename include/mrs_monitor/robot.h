@@ -8,6 +8,7 @@
 #include <mrs_monitor/geometry.h>
 #include <actionlib_msgs/GoalStatusArray.h>
 #include <dynamic_reconfigure/Reconfigure.h>
+#include <std_srvs/Trigger.h>
 
 namespace mrs_monitor
 {
@@ -35,6 +36,7 @@ public:
 
   bool getPose(Pose2D &pose);
   void getPose(PoseStamped &pose) const;
+
   inline void updateCurrentPose()
   {
     getPose(cur_pose);
@@ -53,6 +55,9 @@ public:
   }
 
   double timeToGoal();
+
+  // cancel mission, later can introduce mission to cancel specifically
+  bool cancelMission();
 
 private:
 
@@ -78,6 +83,8 @@ private:
   ros::Subscriber status_sub;
   ros::Publisher goal_pub, remaining_path_pub, track_pub;
   nav_msgs::Path remaining_path;
+
+  ros::ServiceClient cancel_srv;
 
   void statusCallback(const actionlib_msgs::GoalStatusArrayConstPtr &goal_status);
 

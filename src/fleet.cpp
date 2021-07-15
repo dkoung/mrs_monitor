@@ -11,11 +11,14 @@ Fleet::Fleet() : nh("~"), tf_listener(tf_buffer)
   estimate_srv = nh.advertiseService("estimate", &Fleet::estimateCallback, this);
   move_srv = nh.advertiseService("move", &Fleet::moveCallback, this);
   status_srv = nh.advertiseService("status", &Fleet::statusCallback, this);
+  // Cancel mission
+  cancel_srv = nh.advertiseService("cancel", &Fleet::cancelCallback, this); 
 
   goals_pub = nh.advertise<geometry_msgs::PoseArray>("last_goals", 10);
 
   plan_srv = nh.serviceClient<nav_msgs::GetPlan>("/mrs_planner/GlobalPlanner/make_plan");
   last_plan.request.start.header.frame_id = last_plan.request.goal.header.frame_id = "map";
+
 }
 
 Robot* Fleet::getRobot(const std::string &name)
@@ -106,5 +109,18 @@ bool Fleet::statusCallback(StatusRequest &req, StatusResponse &res)
   robot->getPose(res.pose);
   res.seconds_to_goal = robot->timeToGoal();
   return true;
+}
+
+bool Fleet::cancelCallback(CancelRequest &req, CancelResponse &res){
+  auto robot = getRobot(req.robot_name);
+
+  if(robot->cancelMission())
+    res.success= true;
+  else
+    res.success = false;
+    
+  //std::cout << "Fleet cancel mission: " << (res.success ? "true" : "false") << "\n";
+
+  return res.success;
 }
 

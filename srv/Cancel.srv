@@ -1,0 +1,4 @@
+# cancel this robot's mission
+string robot_name
+---
+bool success

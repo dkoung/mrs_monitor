@@ -4,6 +4,7 @@
 #include <mrs_monitor/robot.h>
 #include <ros/ros.h>
 #include <tf2_ros/transform_listener.h>
+#include <mrs_monitor/Cancel.h>
 #include <mrs_monitor/Estimate.h>
 #include <mrs_monitor/Move.h>
 #include <mrs_monitor/Status.h>
@@ -34,10 +35,13 @@ private:
   bool moveCallback(MoveRequest &req, MoveResponse &);
   bool statusCallback(StatusRequest &req, StatusResponse &res);  
 
+  // cancel mission
+  ros::ServiceServer cancel_srv;
+  bool cancelCallback(CancelRequest &req, CancelResponse &res);
+
   // global planning service - used for all estimations  
   ros::ServiceClient plan_srv;
   nav_msgs::GetPlan last_plan;
-
 };
 
 

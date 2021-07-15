@@ -10,6 +10,7 @@ cmake_modules
 roscpp
 nav_msgs
 sensor_msgs
+std_srvs
 tf2_ros
 urdf
 message_generation
@@ -20,6 +21,7 @@ dwa_local_planner
 
 add_service_files(
    FILES
+   Cancel.srv
    Estimate.srv
    Move.srv
    Status.srv

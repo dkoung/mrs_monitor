@@ -6,7 +6,8 @@
 #include <dwa_local_planner/dwa_planner_ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <actionlib_msgs/GoalStatusArray.h>
-#include <nav_msgs/GetPlan.h>
+#include <nav_msgs/GetPlan.h> 
+#include <std_srvs/Trigger.h>
 
 namespace mrs_monitor
 {
@@ -85,6 +86,14 @@ private:
   void refresh();
   ros::Timer timer;
   ros::Duration refresh_still, refresh_moving;
+
+  // cancel mission
+  ros::ServiceServer cancel_srv;
+  inline bool cancelCallback(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &res){
+    status = Status::DONE;
+    res.message = "Successfully cancel mission";
+    res.success = true;
+  }
 };
 
 }

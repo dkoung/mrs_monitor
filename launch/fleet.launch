@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     
-    <arg name="n" default="0"/>
+    <arg name="n" default="3"/>
     <arg name="radius" default=".15"/>
     <arg name="use_move_base" default="false"/>
     <arg name="zero_pose" default="false"/>

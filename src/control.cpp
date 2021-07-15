@@ -20,6 +20,9 @@ Controller::Controller() : priv("~"), buffer(ros::Duration(10)), tl(buffer)
   refresh_still.fromSec(1);  
   refresh_moving.fromSec(1./priv.param("controller_frequency", 5.));
   timer = nh.createTimer(refresh_still, [&](auto &){refresh();});
+
+  // Cancel mission
+  cancel_srv = priv.advertiseService("cancel", &Controller::cancelCallback, this); 
 }
 
 void Controller::refresh()

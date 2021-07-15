@@ -8,6 +8,8 @@ dynamic_reconfigure::Reconfigure Robot::max_vel_config;
 
 Robot::Robot(ros::NodeHandle &nh, std::string name) : nh(nh), name(name), frame(name + "/base_link"), move_base_ns("/" + name + "/move_base/")
 {
+  cancel_srv = nh.serviceClient<std_srvs::Trigger>(move_base_ns + "cancel");
+
   goal_pub = nh.advertise<geometry_msgs::PoseStamped>("/" + name + "/move_base_simple/goal", 10);
   track_pub = nh.advertise<nav_msgs::Path>("/" + name + "/move_base_simple/plan", 10);
   remaining_path.header.frame_id = "map";
@@ -148,4 +150,12 @@ void Robot::publishRemainingPath()
 
   remaining_path.header.stamp = ros::Time::now();
   remaining_path_pub.publish(remaining_path);
+}
+
+bool Robot::cancelMission(){
+  std_srvs::Trigger cancel;
+  status = Status::WAITING;
+  cancel_srv.call(cancel);
+  //std::cout << "Robot cancel mission: " << (cancel.response.success  ? "true" : "false") << "\n";
+  return cancel.response.success;
 }

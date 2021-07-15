@@ -14,8 +14,9 @@ All planning / control are done through the nav stack. It could be anything, as 
 
 The main node is `mrs_monitor` and exposes three services, that are all defined in the package:
 * `estimate(start, goal, vmax, wmax)`: time-estimation of the trajectory between two 2D poses
-* `status(name)`: get the status of a robot. It is either `-1.` if the robot is waiting, of the estimated time to arrival if it is doing something
+* `status(name)`: get the status of a robot. It is either `-1.0` if the robot is waiting, or the estimated time to arrival if it is doing something
 * `move(name, goal, vmax, wmax)`: request a robot to move
+* `cancel(name)`: stop the robot immediately and reset its status to waiting (`-1.0`)
 
 # Demo node
 
